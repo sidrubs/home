@@ -1,0 +1,14 @@
+# Activates the kernel modules that are [required][1] for longhorn.
+#
+# This assumes that the `siderolabs/iscsi-tools` and `siderolabs/util-linux-tools` talos extensions are installed.
+#
+# [1]: https://phin3has.blog/posts/talos-longhorn/#1-configure-talos-worker-nodes
+
+version: v1alpha1
+machine:
+  kernel:
+    modules:
+      - name: nbd
+      - name: iscsi_tcp
+      # - name: iscsi_generic # Doesn't seem to be present.
+      - name: configfs

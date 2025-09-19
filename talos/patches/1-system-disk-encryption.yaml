@@ -1,0 +1,29 @@
+# Set up disk encryption for STATE and EPHEMERAL volumes using TPM.
+#
+# Shrinks the EPHEMERAL volume so there is space for a RawVolume for application storage.
+#
+# https://www.talos.dev/v1.12/talos-guides/configuration/disk-encryption/
+
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: STATE
+encryption:
+  provider: luks2
+  keys:
+    - tpm: {}
+      slot: 1
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  diskSelector:
+    match: "system_disk"
+  maxSize: 120GB
+  minSize: 120GB
+encryption:
+  provider: luks2
+  keys:
+    - tpm: {}
+      slot: 1
+      # lockToSTATE: true

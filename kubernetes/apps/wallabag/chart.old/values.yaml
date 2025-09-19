@@ -1,0 +1,27 @@
+# wallabag configuration
+wallabag:
+  # key: wallabag.repository
+  repository:
+    # key: wallabag.repository.image
+    image: wallabag/wallabag
+    # key: wallabag.repository.tag
+    tag: "2.6.13"
+  # key: wallabag.replicas
+  replicas: 1
+  # key: wallabag.nodeSelector
+  nodeSelector: {}
+  # Resources allows you to specify the resource requests and limits for a service.
+  # Resources are used to specify the amount of CPU and memory that
+  # a container needs.
+  #
+  # e.g.
+  # resources:
+  #   requests:
+  #     memory: "64Mi"
+  #     cpu: "250m"
+  #   limits:
+  #     memory: "128Mi"
+  #     cpu: "500m"
+  # key: wallabag.resources
+  resources: {}
+  imagePullPolicy: IfNotPresent

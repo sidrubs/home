@@ -1,0 +1,18 @@
+# Sets up a raw volume for Longhorn. Encrypted with TPM.
+#
+# https://www.talos.dev/v1.11/talos-guides/configuration/disk-management/user/
+# https://www.talos.dev/v1.11/reference/configuration/block/uservolumeconfig/
+
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+provisioning:
+  diskSelector:
+    match: "system_disk"
+  minSize: 250GB
+  maxSize: 250GB
+encryption:
+  provider: luks2
+  keys:
+    - tpm: {}
+      slot: 0

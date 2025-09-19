@@ -1,0 +1,9 @@
+# Set up the tailscale extension.
+#
+# https://github.com/siderolabs/extensions/tree/main/network/tailscale
+
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: tailscale
+environment:
+  - TS_AUTHKEY=<auth-key>

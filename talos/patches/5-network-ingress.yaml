@@ -1,0 +1,21 @@
+# Note: This is currently not applied don't trust that I will let the correct ports through.
+#
+# Block all traffic by default, allow traffic from tailscale
+#
+# https://www.talos.dev/v1.11/reference/configuration/network/networkruleconfig/
+#
+# Before you deploy check that `tailscale0` is the name of the tailscale subnet
+
+apiVersion: v1alpha1
+kind: NetworkDefaultActionConfig
+ingress: block
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: tailscale-ingress
+# portSelector:
+#   # Set to the control ports `talosctl` and `kubectl`.
+#   ports:
+#     - 50000
+ingress:
+  - subnet: tailscale0

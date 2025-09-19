@@ -1,0 +1,14 @@
+# https://joshrnoll.com/installing-longhorn-on-talos-with-helm/#customize-the-install-with-valuesyaml
+defaultSettings:
+  defaultReplicaCount: 1
+  # Path to UserVolume set up in talos
+  defaultDataPath: "/var/mnt/longhorn/"
+persistence:
+  defaultClassReplicaCount: 1
+csi:
+  attacherReplicaCount: 1
+  provisionerReplicaCount: 1
+  resizerReplicaCount: 1
+  snapshotterReplicaCount: 1
+longhornUI:
+  replicas: 1

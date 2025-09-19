@@ -1,0 +1,18 @@
+# This is the main values.yaml file for the downloads chart.
+# More information can be found in the chart's README.md file.
+#
+# generated at: 2025-09-18T19:14:51-03:00
+# compose files: docker-compose.yaml
+# compose hash (sha1): 44c765d35191d22e90565a71aa27828a52d1b5d3
+
+# Name of the chart (required), basically the name of the project.
+name: downloads
+apiVersion: v2
+
+# Version of the chart (required)
+version: 0.1.0
+
+# Version of the application (required).
+# This should be the main application version.
+appVersion: 0.1.0
+description: A Helm chart for downloads
