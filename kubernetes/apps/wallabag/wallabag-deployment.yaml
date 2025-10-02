@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: wallabag
+  name: wallabag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: wallabag
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: wallabag
+    spec:
+      containers:
+        - env:
+            - name: SYMFONY__ENV__DOMAIN_NAME
+              value: http://localhost:8080
+            # Fill this out once sops is set up
+            # - name: SYMFONY__ENV__SECRET
+            #   value: <your_secret_key_here>
+          image: wallabag/wallabag:2.6.13
+          name: wallabag
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/www/wallabag/data
+              name: wallabag-claim-data
+            - mountPath: /var/www/wallabag/web/assets/images
+              name: wallabag-claim-images
+      restartPolicy: Always
+      volumes:
+        - name: wallabag-claim-data
+          persistentVolumeClaim:
+            claimName: wallabag-claim-data
+        - name: wallabag-claim-images
+          persistentVolumeClaim:
+            claimName: wallabag-claim-images
