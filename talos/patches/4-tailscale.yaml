@@ -1,6 +1,12 @@
-# Set up the tailscale extension.
+# Set up the tailscale [extension][1].
 #
-# https://github.com/siderolabs/extensions/tree/main/network/tailscale
+# Note: When setting up the [Auth Key][2] on tailscale. I suggest using a tagged key,
+# so that it does not expire and thus loose remote access. I am not sure if the
+# key should be `ephemeral`, I am not sure what happens if one flashes a new
+# configuration on the Talos node.
+#
+# [1]: https://github.com/siderolabs/extensions/tree/main/network/tailscale
+# [2]: https://tailscale.com/kb/1085/auth-keys
 
 apiVersion: v1alpha1
 kind: ExtensionServiceConfig
