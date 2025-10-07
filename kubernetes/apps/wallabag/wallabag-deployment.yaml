@@ -20,9 +20,11 @@ spec:
         - env:
             - name: SYMFONY__ENV__DOMAIN_NAME
               value: http://localhost:8080
-            # Fill this out once sops is set up
-            # - name: SYMFONY__ENV__SECRET
-            #   value: <your_secret_key_here>
+            - name: SYMFONY__ENV__SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: wallabag-secrets
+                  key: symfony-env-secret
           image: wallabag/wallabag:2.6.13
           name: wallabag
           ports:

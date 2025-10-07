@@ -1,14 +1,4 @@
-# Create a kubernetes secret to be used for volume encryption.
-apiVersion: v1
-kind: Secret
-metadata:
-  name: longhorn-crypto
-  namespace: longhorn-system
-stringData:
-  CRYPTO_KEY_VALUE: "<replace-with-passphrase>"
-  CRYPTO_KEY_PROVIDER: "secret"
----
-# Use the above `longhorn-crypto` secret to encrypt all longhorn volumes.
+# Use the `longhorn-crypto` secret to encrypt all longhorn volumes.
 # To be more secure, one could use a different key per volume, but I don't
 # feel that is necessary for my use case.
 kind: StorageClass

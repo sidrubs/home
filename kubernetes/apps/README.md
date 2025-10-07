@@ -15,5 +15,5 @@ Just apply the directory.
 E.g:
 
 ```
-kubectl apply -f wallabag -n apps
+kubectl apply --recursive -f wallabag -n apps
 ```

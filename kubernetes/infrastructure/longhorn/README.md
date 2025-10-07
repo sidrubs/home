@@ -29,13 +29,13 @@ helm install longhorn longhorn/longhorn --namespace longhorn-system --values=val
 
 > This is following instructions from [here](https://longhorn.io/docs/archives/1.3.0/advanced-resources/security/volume-encryption/)
 
-The [encrypted-storage-class.yaml](./encrypted-storage-class.yaml) deployment defines a kubernetes secret and an encrypted Longhorn storage class using the secret as its encryption key. 
+The [encrypted-storage-class.yaml](./encrypted-storage-class.yaml) deployment defines a kubernetes secret and an encrypted Longhorn storage class using the secret as its encryption key.
 
-1. Replace the `CRYPTO_KEY_VALUE: "<replace-with-passphrase>"` with an actual passphrase.
+1. Decrypt `encrypted-storage/secrets/longhorn-encrypted-storage-secrets.yaml` with sops.
 2. Apply with `kubectl`.
 
    ```bash
-   kubectl apply -f encrypted-storage-class.yaml
+   kubectl apply --recursive -f encrypted-storage
    ```
 
 3. Remove the current default storage class and set `longhorn-crypto-global` as default (see [docs](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/)).
@@ -47,5 +47,3 @@ kubectl patch storageclass longhorn -p '{"metadata": {"annotations":{"storagecla
 # Set the `longhorn-crypto-global` as default.
 kubectl patch storageclass longhorn-crypto-global -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
-
-
