@@ -8,6 +8,8 @@ Follow the [Talos README](talos/README.md) for instructions.
 
 ### Kubernetes
 
+[Infrastructure](kubernetes/infrastructure) needs to be deployed before any of the [apps](kubernetes/apps)
+
 #### Infrastructure
 
 ##### Longhorn

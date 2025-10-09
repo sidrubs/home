@@ -6,19 +6,19 @@ Most of the instructions are from [here](https://joshrnoll.com/installing-longho
 
 Create namespace
 
-```
+```bash
 kubectl apply -f namespace.yaml
 ```
 
 Add longhorn repo
 
-```
+```bash
 helm repo add longhorn https://charts.longhorn.io && helm repo update
 ```
 
 Install on cluster
 
-```
+```bash
 helm install longhorn longhorn/longhorn --namespace longhorn-system --values=values.yaml
 ```
 
@@ -46,4 +46,35 @@ kubectl patch storageclass longhorn -p '{"metadata": {"annotations":{"storagecla
 
 # Set the `longhorn-crypto-global` as default.
 kubectl patch storageclass longhorn-crypto-global -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
+
+## Setting up snapshotting for use with VolSync.
+
+I'm not sure why this is not coming with the helm chart, but that is for another day.
+
+Apply these.
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.3.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.3.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.3.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
+```
+
+Verify their installation.
+
+```bash
+kubectl get crd | grep snapshot.storage.k8s.io
+```
+
+Install the kubernetes cluster-wide snapshot controller.
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.3.0/deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.3.0/deploy/kubernetes/snapshot-controller/setup-snapshot-controller.yaml
+```
+
+Create a VolumeSnapshotClass
+
+```bash
+kubectl apply -f snapshot-functionality
 ```
