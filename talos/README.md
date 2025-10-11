@@ -36,3 +36,58 @@ talosctl patch mc --nodes $HOMELAB_IP --patch @patches/4-tailscale.yaml
 ```
 
 > **Note:** After applying the tailscale patch use `talosctl edit machineconfig -n $HOMELAB_IP` to change the controlplane ip to match the tailnet ip address.
+
+## Upgrading Talos
+
+Get the correct image url from the [Talos image factory](https://factory.talos.dev). Make sure you add the correct extensions (see below),
+
+```
+Your image schematic ID is: 708747e350d604ae9e57227d8dcf274091453ddb1097b765d4ea8884f1992c1f
+
+ customization:
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/tailscale
+            - siderolabs/util-linux-tools
+```
+
+Check current version
+
+```bash
+talosctl version -n $HOMELAB_IP
+```
+
+Then run the following with the upgrade image path set to the correct version.
+
+```bash
+talosctl upgrade -n $HOMELAB_IP --image factory.talos.dev/metal-installer-secureboot/708747e350d604ae9e57227d8dcf274091453ddb1097b765d4ea8884f1992c1f:v1.11.2 --preserve
+```
+
+> `--preserve` ensures that custom mounts and ephemeral data is kept.
+
+Upgrade to the latest version of `talosctl` to match the version of the cluster. This can be done with the following command.
+
+```bash
+curl -sL https://talos.dev/install | sh
+```
+
+## Upgrading Kubernetes
+
+```bash
+talosctl upgrade-k8s --to 1.34.1 -n $HOMELAB_IP
+```
+
+Upgrading kubectl
+
+```bash
+# Download binary
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+# Validate checksum
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+
+# Install binary
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
