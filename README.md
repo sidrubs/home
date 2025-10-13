@@ -15,3 +15,7 @@ Follow the [Talos README](talos/README.md) for instructions.
 ##### Longhorn
 
 Follow the [Longhorn README](kubernetes/infrastructure/longhorn/README.md) for instructions.
+
+##### VolSync
+
+##### Traefik

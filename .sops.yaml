@@ -1,8 +1,13 @@
 creation_rules:
   # Kubernetes deployments with secrets in a `**/secrets` dir.
   - path_regex: '.*secrets.*\.(yaml|yml|json)$'
-    # Encrypt only sensitive fields.
     encrypted_regex: "^(data|stringData)$"
+    age: age15zhjt0ckkpckkk4f8wy3glh9cahdd68v3mr73p32z8mga7s3e5usx2sn6m
+
+  # Helm values files (e.g., values.yaml, values-prod.yaml)
+  - path_regex: '(^|.*/)values.*\.(yaml|yml)$'
+    # Encrypt any field that looks like a credential or secret
+    encrypted_regex: "(?i)(secret|token|password|clientSecret|apiKey)$"
     age: age15zhjt0ckkpckkk4f8wy3glh9cahdd68v3mr73p32z8mga7s3e5usx2sn6m
 
   # # Talos machine configs

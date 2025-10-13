@@ -1,0 +1,18 @@
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`dashboard.skuxnet`)
+    entryPoints:
+      - web
+providers:
+  kubernetesGateway:
+    enabled: true
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault

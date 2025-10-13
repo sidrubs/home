@@ -1,0 +1,19 @@
+# values.yaml for tailscale-operator
+oauth:
+    clientId: kivR7SKS7D21CNTRL
+    clientSecret: ENC[AES256_GCM,data:8AEu/su2Q08JfHvrzX3w4tB2NMMR0LvKbxCuzLpBrk30I+vG76wNwjRDXjU9XshjBcPC27RZaJKSNqB1Wpgt,iv:e/AB2j9kJmW4FGO2yE/fIaIP3Mn8IL3NkfDIoqiTx4w=,tag:EOJ9dNYi7v593JZNlDuD3g==,type:str]
+sops:
+    age:
+        - recipient: age15zhjt0ckkpckkk4f8wy3glh9cahdd68v3mr73p32z8mga7s3e5usx2sn6m
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXSlBaaXQ3SkVFbENKdFRk
+            V0YrdjZkS3VPQlBmRUJUZVZ3R1J5UnZzYlV3CnFWbmt4Q1BTK2JDSzFCbHJteE85
+            bjlpakNxRjFXb3F4OXFDRmZsTjBXNFUKLS0tIEhHYzVMMEZjcHRBNm8zVVBKU2Rs
+            TmhrdFJPMS9oZWhIWXUwTkFIWFNjdncKmMPvdbSJ83nt8mQaQhUmtxHV8zjoeJxM
+            DF1mBQgXUKX9BG2W21WJmES1N/0gJq26bHzbcL8IpQ5UqbhWjLTokQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-10-13T19:44:45Z"
+    mac: ENC[AES256_GCM,data:FIwDYAA0ZFT3HG4QPBL9Ph50M3FYFWNyCws4NoRaO067BkQLkh0ilz3z01uFNKpo30OBt8fzF99lxtF7ZwB4dSls9tX1g5wVg6Vnxz3RwgbWPJwD8Ot21GRgWeQl0jxffxadQa1UJpdOdWexo84eQiv+GQTpFmTEGZ+8yEqXmbk=,iv:xMEJxnxmWgboUyUAzQwGJ9EWXXXHdIx2jRDGoPLPTlo=,tag:x4tEyufGAvJ0uuVC1tcgnw==,type:str]
+    encrypted_regex: (?i)(secret|token|password|clientSecret|apiKey)$
+    version: 3.10.2
