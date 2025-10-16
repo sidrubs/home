@@ -1,4 +1,5 @@
-# Allows tailscale to modify and store data in the `tailscale-auth` secret.
+# Allows tailscale to modify and store data in the `tailscale-auth` and
+# `tailscale-auth-dns` secrets.
 
 apiVersion: v1
 kind: ServiceAccount
@@ -12,7 +13,7 @@ metadata:
   name: tailscale
 rules:
   - apiGroups: [""]
-    resourceNames: ["tailscale-auth"]
+    resourceNames: ["tailscale-auth", "tailscale-auth-dns"]
     resources: ["secrets"]
     verbs: ["get", "update", "patch"]
 

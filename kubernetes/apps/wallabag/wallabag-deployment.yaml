@@ -19,7 +19,7 @@ spec:
       containers:
         - env:
             - name: SYMFONY__ENV__DOMAIN_NAME
-              value: http://skuxnet/wallabag
+              value: http://wallabag.skuxnet
             - name: SYMFONY__ENV__SECRET
               valueFrom:
                 secretKeyRef:

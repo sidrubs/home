@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: tailscale-proxy
+  name: tailscale-reverse-proxy
 spec:
   serviceAccountName: tailscale
   initContainers:

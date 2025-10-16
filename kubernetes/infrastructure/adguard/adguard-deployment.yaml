@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard
+  namespace: adguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adguard
+  template:
+    metadata:
+      labels:
+        app: adguard
+    spec:
+      containers:
+        - name: adguard
+          image: adguard/adguardhome:v0.107.67
+          # Note: The dockerhub page has a description of all the ports that
+          # can be used for different applications, e.g. DNS over TLS, etc. I
+          # am just using the common config for now.
+          ports:
+            - containerPort: 3000 # Web interface init
+            - containerPort: 80 # Web interface
+            - containerPort: 53 # DNS
+              protocol: UDP
+            - containerPort: 53 # DNS
+              protocol: TCP
+          volumeMounts:
+            - name: adguard-work
+              mountPath: /opt/adguardhome/work
+            - name: adguard-conf
+              mountPath: /opt/adguardhome/conf
+      volumes:
+        - name: adguard-work
+          persistentVolumeClaim:
+            claimName: adguard-work
+        - name: adguard-conf
+          persistentVolumeClaim:
+            claimName: adguard-conf

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tailscale-dns
+spec:
+  serviceAccountName: tailscale
+  initContainers:
+    - name: sysctler
+      image: busybox:latest
+      securityContext:
+        privileged: true
+      command: ["/bin/sh"]
+      args:
+        - -c
+        - sysctl -w net.ipv4.ip_forward=1 net.ipv6.conf.all.forwarding=1
+  containers:
+    - name: tailscale
+      image: ghcr.io/tailscale/tailscale:latest
+      env:
+        - name: TS_KUBE_SECRET
+          value: tailscale-auth-dns
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale-auth-dns
+              key: TS_AUTHKEY
+        - name: TS_USERSPACE
+          value: "false"
+        - name: TS_DEST_IP
+          # Set to cluster IP of adguard-dns service
+          value: 10.104.120.230
+      securityContext:
+        capabilities:
+          add:
+            - NET_ADMIN
