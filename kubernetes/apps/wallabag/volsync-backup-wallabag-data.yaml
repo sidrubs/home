@@ -7,8 +7,8 @@ spec:
   # The PVC to be backed up
   sourcePVC: wallabag-claim-data
   trigger:
-    # Take a backup every day at 3am
-    schedule: "0 3 * * *"
+    # Take a backup every Sunday at 3am
+    schedule: "0 3 * * 0"
   restic:
     # Prune the repository (repack to free space) every 2 weeks
     pruneIntervalDays: 14
@@ -16,8 +16,7 @@ spec:
     repository: volsync-config-wallabag-data
     # Retention policy for backups
     retain:
-      daily: 5
-      weekly: 4
+      weekly: 3
       monthly: 2
       yearly: 1
     # Clone the source volume prior to taking a backup to ensure a
