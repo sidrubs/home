@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: ihatemoney
+  name: ihatemoney
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: ihatemoney
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: ihatemoney
+    spec:
+      containers:
+        - env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ihatemoney-secrets
+                  key: SECRET_KEY
+            - name: SESSION_COOKIE_SECURE
+              value: "False"
+            - name: SQLALCHEMY_DATABASE_URI
+              value: sqlite:////home/ihatemoney/ihatemoney.db
+            - name: ACTIVATE_DEMO_PROJECT
+              value: "False"
+            - name: ALLOW_PUBLIC_PROJECT_CREATION
+              value: "False"
+            - name: ACTIVATE_ADMIN_DASHBOARD
+              value: "True"
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ihatemoney-secrets
+                  key: ADMIN_PASSWORD
+          image: ihatemoney/ihatemoney:6.1.5
+          name: ihatemoney
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /home/ihatemoney
+              name: ihatemoney-claim
+      restartPolicy: Always
+      volumes:
+        - name: ihatemoney-claim
+          persistentVolumeClaim:
+            claimName: ihatemoney-claim
