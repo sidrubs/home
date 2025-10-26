@@ -11,6 +11,9 @@ helm repo add traefik https://traefik.github.io/charts
 helm repo update
 
 helm install -n traefik traefik traefik/traefik -f values.yaml
+
+# Add gateway for Gateway API
+kubectl apply -f traefik-gateway.yaml
 ```
 
 ## Setting up HTTPS with a self signed certificate

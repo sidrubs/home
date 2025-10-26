@@ -3,14 +3,12 @@ creation_rules:
   - path_regex: '.*secrets.*\.(yaml|yml|json)$'
     encrypted_regex: "^(data|stringData)$"
     age: age15zhjt0ckkpckkk4f8wy3glh9cahdd68v3mr73p32z8mga7s3e5usx2sn6m
-    indent: 2
 
   # Helm values files (e.g., values.yaml, values-prod.yaml)
   - path_regex: '(^|.*/)values.*\.(yaml|yml)$'
     # Encrypt any field that looks like a credential or secret
     encrypted_regex: "(?i)(secret|token|password|clientSecret|apiKey)$"
     age: age15zhjt0ckkpckkk4f8wy3glh9cahdd68v3mr73p32z8mga7s3e5usx2sn6m
-    indent: 2
 
   # # Talos machine configs
   # - path_regex: '^talos/.*\.(yaml|yml)$'

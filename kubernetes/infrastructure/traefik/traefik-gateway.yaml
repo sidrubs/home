@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-gateway
+  namespace: traefik
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: websecure
+      protocol: HTTPS
+      port: 443
+      hostname: "*.skuxnet"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: traefik-tls-secrets
+            namespace: traefik
+      allowedRoutes:
+        namespaces:
+          from: All
