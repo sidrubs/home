@@ -17,6 +17,23 @@ spec:
       labels:
         service: wallabag
     spec:
+      initContainers:
+        - name: wallabag-migrate
+          image: wallabag/wallabag:2.6.13
+          command: ["/var/www/wallabag/bin/console"]
+          args:
+            ["doctrine:migrations:migrate", "--env=prod", "--no-interaction"]
+          env:
+            - name: SYMFONY__ENV__DOMAIN_NAME
+              value: https://wallabag.skuxnet
+            - name: SYMFONY__ENV__SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: wallabag-secrets
+                  key: symfony-env-secret
+          volumeMounts:
+            - mountPath: /var/www/wallabag/data
+              name: wallabag-claim-data
       containers:
         - env:
             - name: SYMFONY__ENV__DOMAIN_NAME
