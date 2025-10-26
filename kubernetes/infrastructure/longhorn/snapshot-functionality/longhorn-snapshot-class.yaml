@@ -2,5 +2,6 @@ apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
   name: longhorn-snapshot-class
+  namespace: longhorn-system
 driver: driver.longhorn.io
 deletionPolicy: Delete

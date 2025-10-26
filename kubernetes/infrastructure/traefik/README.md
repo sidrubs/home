@@ -5,7 +5,7 @@ Most of the instructions are from [here](https://doc.traefik.io/traefik/getting-
 ## Install Traefik
 
 ```bash
-kubectl create namespace traefik
+kubectl apply -f traefik-namespace.yaml
 
 helm repo add traefik https://traefik.github.io/charts
 helm repo update

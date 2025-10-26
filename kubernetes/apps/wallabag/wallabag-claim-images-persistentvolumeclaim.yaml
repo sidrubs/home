@@ -4,6 +4,7 @@ metadata:
   labels:
     service: wallabag
   name: wallabag-claim-images
+  namespace: apps
 spec:
   accessModes:
     - ReadWriteOnce

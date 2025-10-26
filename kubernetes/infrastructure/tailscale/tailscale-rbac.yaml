@@ -5,12 +5,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: tailscale
+  namespace: tailscale
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: tailscale
+  namespace: tailscale
 rules:
   - apiGroups: [""]
     resourceNames: ["tailscale-auth", "tailscale-auth-dns"]
@@ -22,6 +24,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: tailscale
+  namespace: tailscale
 subjects:
   - kind: ServiceAccount
     name: tailscale

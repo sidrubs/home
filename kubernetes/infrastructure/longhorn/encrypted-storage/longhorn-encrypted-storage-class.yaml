@@ -5,6 +5,7 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: longhorn-crypto-global
+  namespace: longhorn-system
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 parameters:

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: tailscale-dns
+  namespace: tailscale
 spec:
   serviceAccountName: tailscale
   initContainers:
