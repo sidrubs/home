@@ -46,18 +46,14 @@ In your tailnet policy file, create the tags tag:k8s-operator and tag:k8s, and m
 
 Create an OAuth client in the OAuth clients page of the admin console. Create the client with Devices Core and Auth Keys write scopes, and the tag `tag:k8s-operator`.
 
-```bash
-# Add the repository
-helm repo add tailscale https://pkgs.tailscale.com/helmcharts
-
-# Update your client’s package list
-helm repo update
-```
-
 Install the operator
 
 ```bash
-helm upgrade --install tailscale-operator tailscale/tailscale-operator \
+# Update dependencies (downloads the chart version specified in Chart.yaml)
+helm dependency update
+
+# Install from the local chart with dependencies
+helm upgrade --install tailscale-operator . \
   --namespace tailscale \
   -f values.yaml \
   --wait

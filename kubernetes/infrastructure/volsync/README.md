@@ -4,14 +4,12 @@ The installation instructions are taken from [here](https://volsync.readthedocs.
 
 ## Steps
 
-Add the Backube Helm repo
-
-```bash
-helm repo add backube https://backube.github.io/helm-charts/
-```
-
 Deploy the chart in your cluster
 
 ```bash
-helm install --create-namespace -n volsync-system volsync backube/volsync
+# Update dependencies (downloads the chart version specified in Chart.yaml)
+helm dependency update
+
+# Install from the local chart with dependencies
+helm install --create-namespace -n volsync-system volsync .
 ```
