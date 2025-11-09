@@ -7,10 +7,11 @@ Most of the instructions are from [here](https://doc.traefik.io/traefik/getting-
 ```bash
 kubectl apply -f traefik-namespace.yaml
 
-helm repo add traefik https://traefik.github.io/charts
-helm repo update
+# Update dependencies (downloads the chart version specified in Chart.yaml)
+helm dependency update
 
-helm install -n traefik traefik traefik/traefik -f values.yaml
+# Install from the local chart with dependencies
+helm install -n traefik traefik . -f values.yaml
 
 # Add gateway for Gateway API
 kubectl apply -f traefik-gateway.yaml

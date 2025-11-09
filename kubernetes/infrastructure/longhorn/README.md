@@ -10,16 +10,14 @@ Create namespace
 kubectl apply -f namespace.yaml
 ```
 
-Add longhorn repo
-
-```bash
-helm repo add longhorn https://charts.longhorn.io && helm repo update
-```
-
 Install on cluster
 
 ```bash
-helm install longhorn longhorn/longhorn --namespace longhorn-system --values=values.yaml
+# Update dependencies (downloads the chart version specified in Chart.yaml)
+helm dependency update
+
+# Install from the local chart with dependencies
+helm install longhorn . --namespace longhorn-system --values=values.yaml
 ```
 
 > For now - while I don't have any load balancers, etc set up - the Longhorn UI can be accessed by forwarding its port with `kubectl port-forward service/longhorn-frontend 8080:80 -n longhorn-system` and visiting http://localhost:8080

@@ -38,27 +38,3 @@ In your tailnet policy file, create the tags tag:k8s-operator and tag:k8s, and m
    "tag:k8s": ["tag:k8s-operator"],
 }
 ```
-
-## Tailscale Operator
-
-> I am pretty sure that the following is for the Tailscale operator, which I don't think I am using. This includes the [`values.yaml`](./values.yaml) file.
-
-
-Create an OAuth client in the OAuth clients page of the admin console. Create the client with Devices Core and Auth Keys write scopes, and the tag `tag:k8s-operator`.
-
-```bash
-# Add the repository
-helm repo add tailscale https://pkgs.tailscale.com/helmcharts
-
-# Update your client’s package list
-helm repo update
-```
-
-Install the operator
-
-```bash
-helm upgrade --install tailscale-operator tailscale/tailscale-operator \
-  --namespace tailscale \
-  -f values.yaml \
-  --wait
-```
