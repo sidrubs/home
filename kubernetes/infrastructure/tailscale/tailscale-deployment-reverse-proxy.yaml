@@ -5,6 +5,7 @@ metadata:
   namespace: tailscale
 spec:
   serviceAccountName: tailscale
+  restartPolicy: Always
   initContainers:
     - name: sysctler
       image: busybox:latest
