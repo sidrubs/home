@@ -20,6 +20,16 @@ helm dependency update
 helm install longhorn . --namespace longhorn-system --values=values.yaml
 ```
 
+Upgrade existing installation
+
+```bash
+# Update dependencies to get the latest chart version from Chart.yaml
+helm dependency update
+
+# Upgrade the release
+helm upgrade longhorn . --namespace longhorn-system --values=values.yaml
+```
+
 > For now - while I don't have any load balancers, etc set up - the Longhorn UI can be accessed by forwarding its port with `kubectl port-forward service/longhorn-frontend 8080:80 -n longhorn-system` and visiting http://localhost:8080
 
 

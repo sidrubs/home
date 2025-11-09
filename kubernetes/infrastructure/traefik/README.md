@@ -17,6 +17,16 @@ helm install -n traefik traefik . -f values.yaml
 kubectl apply -f traefik-gateway.yaml
 ```
 
+## Upgrade Traefik
+
+```bash
+# Update dependencies to get the latest chart version from Chart.yaml
+helm dependency update
+
+# Upgrade the release
+helm upgrade -n traefik traefik . -f values.yaml
+```
+
 ## Setting up HTTPS with a self signed certificate
 
 This guide creates a **self-signed TLS certificate** for your internal reverse proxy serving local apps like
