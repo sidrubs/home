@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: jellyfin
+  name: jellyfin
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: jellyfin
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: jellyfin
+    spec:
+      containers:
+        - env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: https://jellyfin.skuxnet
+          image: jellyfin/jellyfin:2025111005
+          name: jellyfin
+          ports:
+            - containerPort: 8096
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: jellyfin-claim-config
+            - mountPath: /cache
+              name: jellyfin-claim-cache
+            - mountPath: /media
+              name: jellyfin-claim-media
+      restartPolicy: Always
+      volumes:
+        - name: jellyfin-claim-config
+          persistentVolumeClaim:
+            claimName: jellyfin-claim-config
+        - name: jellyfin-claim-cache
+          persistentVolumeClaim:
+            claimName: jellyfin-claim-cache
+        - name: jellyfin-claim-media
+          persistentVolumeClaim:
+            claimName: jellyfin-claim-media
