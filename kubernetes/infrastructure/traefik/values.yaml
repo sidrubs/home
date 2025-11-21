@@ -1,29 +1,31 @@
-# Disable dashboard
-ingressRoute:
-  dashboard:
+# Note values need to be nested because they are being used by a wrapper chart.
+traefik:
+  # Disable dashboard
+  ingressRoute:
+    dashboard:
+      enabled: false
+
+  # Providers
+  providers:
+    kubernetesGateway:
+      enabled: true
+
+  # Disable Helm chart Gateway creation (use standalone gateway.yaml instead)
+  gateway:
     enabled: false
 
-# Providers
-providers:
-  kubernetesGateway:
-    enabled: true
-
-# Disable Helm chart Gateway creation (use standalone gateway.yaml instead)
-gateway:
-  enabled: false
-
-# Ports configuration
-ports:
-  websecure:
-    port: 443
-    expose:
-      enabled: true
-    exposedPort: 443
-    protocol: TCP
-    tls:
-      enabled: true
-  traefik:
-    port: 8080
-    expose:
-      enabled: false
-    protocol: TCP
+  # Ports configuration
+  ports:
+    websecure:
+      port: 443
+      expose:
+        enabled: true
+      exposedPort: 443
+      protocol: TCP
+      tls:
+        enabled: true
+    traefik:
+      port: 8080
+      expose:
+        enabled: false
+      protocol: TCP

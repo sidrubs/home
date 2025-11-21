@@ -30,7 +30,7 @@ spec:
           value: "false"
         - name: TS_DEST_IP
           # Set to cluster IP of traefik
-          value: 10.104.137.148
+          value: 10.100.200.166
       securityContext:
         capabilities:
           add:
