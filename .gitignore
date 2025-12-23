@@ -3,3 +3,6 @@ working-data/
 # Downloaded helm charts
 *.tgz
 Chart.lock
+
+# MacOS bits
+**/.DS_Store
