@@ -39,7 +39,7 @@ spec:
                 secretKeyRef:
                   name: ihatemoney-secrets
                   key: ADMIN_PASSWORD
-          image: ihatemoney/ihatemoney:6.1.5
+          image: ihatemoney/ihatemoney:7.0.1
           name: ihatemoney
           ports:
             - containerPort: 8000
