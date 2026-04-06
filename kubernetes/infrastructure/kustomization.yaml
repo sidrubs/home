@@ -1,0 +1,11 @@
+# Composite kustomization for all infrastructure components.
+# Applied by ks-infrastructure after the crds and longhorn kustomizations are healthy.
+# Note: crds/ and longhorn/ are excluded here — each is managed by its own Flux Kustomization.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - sources/
+  - traefik/
+  - volsync/
+  - tailscale/
+  - adguard/

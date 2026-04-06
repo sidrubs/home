@@ -1,0 +1,9 @@
+# Kustomization for the Traefik ingress controller.
+# Includes namespace, HelmRelease, Gateway, and TLS secret.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - traefik-namespace.yaml
+  - helmrelease.yaml
+  - traefik-gateway.yaml
+  - secrets/traefik-tls-secrets.yaml

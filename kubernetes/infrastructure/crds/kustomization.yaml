@@ -1,0 +1,9 @@
+# Vendored CRDs applied before all other infrastructure.
+# Gateway API v1.4.0 standard channel and external-snapshotter CRDs for VolSync.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - gateway-api.yaml
+  - volumesnapshotclasses.yaml
+  - volumesnapshotcontents.yaml
+  - volumesnapshots.yaml

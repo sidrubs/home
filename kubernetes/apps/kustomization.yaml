@@ -1,0 +1,7 @@
+# Composite kustomization for all apps.
+# Applied by ks-apps after the infrastructure kustomization is healthy.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - wallabag/
+  - jellyfin/

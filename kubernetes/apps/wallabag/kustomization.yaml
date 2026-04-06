@@ -1,0 +1,17 @@
+# Kustomization for the Wallabag read-it-later app.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - pvc-data.yaml
+  - pvc-images.yaml
+  - route.yaml
+  - volsync-backup-data.yaml
+  - volsync-backup-images.yaml
+  - volsync-restore-data.yaml
+  - volsync-restore-images.yaml
+  - secrets/wallabag-secret.yaml
+  - secrets/volsync-data-secret.yaml
+  - secrets/volsync-images-secret.yaml

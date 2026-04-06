@@ -58,6 +58,8 @@ kubectl patch storageclass longhorn-crypto-global -p '{"metadata": {"annotations
 
 ## Setting up snapshotting for use with VolSync.
 
+> This is handled by flux now
+
 I'm not sure why this is not coming with the helm chart, but that is for another day.
 
 Apply these.

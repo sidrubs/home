@@ -3,11 +3,5 @@
   "extends": ["config:recommended"],
   "kubernetes": {
     "fileMatch": ["^kubernetes/.+\\.yaml$"]
-  },
-  "helm-values": {
-    "fileMatch": ["^kubernetes/.+/values\\.yaml$"]
-  },
-  "helmv3": {
-    "fileMatch": ["^kubernetes/.+/Chart\\.yaml$"]
   }
 }

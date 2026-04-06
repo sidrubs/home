@@ -1,0 +1,14 @@
+# Flux Kustomization for the CRD layer.
+# No pruning to protect CRDs from accidental deletion. Runs hourly.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: crds
+  namespace: flux-system
+spec:
+  interval: 1h
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/infrastructure/crds

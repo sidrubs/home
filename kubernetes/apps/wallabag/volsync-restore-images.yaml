@@ -1,0 +1,15 @@
+# ReplicationDestination for restoring wallabag images PVC from restic backup.
+# Trigger is manual — annotate with volsync.backube/trigger-immediate=true to run.
+# Only needed during bootstrap; leave in git so restore is repeatable.
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: wallabag-restore-images
+  namespace: wallabag
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: volsync-config-wallabag-images
+    destinationPVC: wallabag-claim-images
+    copyMethod: Direct

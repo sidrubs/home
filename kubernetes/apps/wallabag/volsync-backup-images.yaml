@@ -1,0 +1,29 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: volsync-backup-wallabag-images
+  namespace: wallabag
+spec:
+  # The PVC to be backed up
+  sourcePVC: wallabag-claim-images
+  trigger:
+    # Take a backup every Sunday at 3am
+    schedule: "0 3 * * 0"
+  restic:
+    # Prune the repository (repack to free space) every 2 weeks
+    pruneIntervalDays: 14
+    # Name of the Secret with the connection information
+    repository: volsync-config-wallabag-images
+    # Retention policy for backups
+    retain:
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    # Clone the source volume prior to taking a backup to ensure a
+    # point-in-time image.
+    copyMethod: Clone
+    # The StorageClass to use when creating the PiT copy (same as source PVC if omitted)
+    #storageClassName: my-sc-name
+    # The VSC to use if the copy method is Snapshot (default if omitted)
+    #volumeSnapshotClassName: my-vsc-name

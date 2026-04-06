@@ -1,0 +1,11 @@
+# Kustomization for the Jellyfin media server.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - pvc-config.yaml
+  - pvc-cache.yaml
+  - pvc-media.yaml
+  - route.yaml

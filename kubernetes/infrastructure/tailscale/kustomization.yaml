@@ -1,0 +1,11 @@
+# Kustomization for Tailscale subnet router and DNS proxy.
+# Provides Tailscale ingress (reverse proxy to Traefik) and DNS forwarding (to AdGuard).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - tailscale-rbac.yaml
+  - tailscale-deployment-dns.yaml
+  - tailscale-deployment-reverse-proxy.yaml
+  - secrets/tailscale-auth-secrets.yaml
+  - secrets/tailscale-auth-secrets-dns.yaml

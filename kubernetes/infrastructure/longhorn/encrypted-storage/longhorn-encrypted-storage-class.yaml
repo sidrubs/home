@@ -6,6 +6,8 @@ apiVersion: storage.k8s.io/v1
 metadata:
   name: longhorn-crypto-global
   namespace: longhorn-system
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 parameters:

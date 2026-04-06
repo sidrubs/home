@@ -1,0 +1,5 @@
+# Kustomization for the VolSync volume replication operator.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - helmrelease.yaml

@@ -1,0 +1,53 @@
+# HelmRelease for Traefik ingress controller.
+# Pulls from the traefik HelmRepository in flux-system and deploys to the traefik namespace.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+  namespace: traefik
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: traefik
+      version: 38.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    # Disable dashboard
+    ingressRoute:
+      dashboard:
+        enabled: false
+
+    # Providers
+    providers:
+      kubernetesGateway:
+        enabled: true
+
+    # Disable Helm chart Gateway creation (use standalone gateway.yaml instead)
+    gateway:
+      enabled: false
+
+    # Ports configuration
+    ports:
+      websecure:
+        port: 443
+        expose:
+          enabled: true
+        exposedPort: 443
+        protocol: TCP
+        tls:
+          enabled: true
+      traefik:
+        port: 8080
+        expose:
+          enabled: false
+        protocol: TCP

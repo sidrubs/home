@@ -1,0 +1,12 @@
+# Kustomization for AdGuard Home DNS server.
+# Provides DNS for *.skuxnet and ad-blocking on the Tailscale network.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - adguard-namespace.yaml
+  - adguard-deployment.yaml
+  - adguard-service-web.yaml
+  - adguard-service-dns.yaml
+  - adguard-pvc-conf.yaml
+  - adguard-pvc-work.yaml
+  - adguard-route.yaml

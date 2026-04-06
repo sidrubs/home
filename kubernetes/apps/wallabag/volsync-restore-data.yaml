@@ -1,0 +1,15 @@
+# ReplicationDestination for restoring wallabag data PVC from restic backup.
+# Trigger is manual — annotate with volsync.backube/trigger-immediate=true to run.
+# Only needed during bootstrap; leave in git so restore is repeatable.
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: wallabag-restore-data
+  namespace: wallabag
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: volsync-config-wallabag-data
+    destinationPVC: wallabag-claim-data
+    copyMethod: Direct
