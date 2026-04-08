@@ -1,0 +1,84 @@
+---
+clusterName: skuxnet-cluster
+talosVersion: v1.12.6
+kubernetesVersion: v1.35.3
+endpoint: https://192.168.2.32:6443
+allowSchedulingOnMasters: true
+nodes:
+  - hostname: skuxnet-talos
+    ipAddress: 192.168.2.32
+    controlPlane: true
+    machineSpec:
+      useUKI: true
+      secureboot: true
+    installDisk: /dev/sda
+    volumes:
+      - name: STATE
+        encryption:
+          provider: luks2
+          keys:
+            - tpm: {}
+              slot: 1
+      # Decrease the size of the EPHEMERAL volume so that there is space for
+      # the userdata disk.
+      - name: EPHEMERAL
+        provisioning:
+          diskSelector:
+            match: "system_disk"
+          maxSize: 120GiB
+          minSize: 120GiB
+        encryption:
+          provider: luks2
+          keys:
+            - tpm: {}
+              slot: 1
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: "system_disk"
+          minSize: 250GiB
+        encryption:
+          provider: luks2
+          keys:
+            - tpm: {}
+              slot: 0
+
+    # Note: The schematic and kernelModules could be applied at a higher level
+    # to all nodes. Just applying it to nodes individually as we only have one
+    # node.
+
+    schematic:
+      customization:
+        # Indicate which extensions Talos should have.
+        systemExtensions:
+          officialExtensions:
+            # Both needed for longhorn
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
+
+    kernelModules:
+      # Needed for longhorn
+      - name: nbd
+      - name: iscsi_tcp
+      - name: configfs
+
+controlPlane:
+  patches:
+    - |-
+      machine:
+        kubelet:
+          extraConfig:
+            # Request a serving cert signed by the Kubernetes CA instead of
+            # using a Talos self-signed cert. Required so the API server can
+            # verify kubelet identity when proxying exec/logs/port-forward.
+            serverTLSBootstrap: true
+      cluster:
+        apiServer:
+          extraArgs:
+            # Verify kubelet serving certs are signed by the cluster CA.
+            # Works in conjunction with kubelet.extraConfig.serverTLSBootstrap.
+            kubelet-certificate-authority: /system/secrets/kubernetes/kube-apiserver/ca.crt
+            # Prevent Services from using spec.externalIPs, which can be used
+            # to intercept cluster traffic by routing it to an arbitrary IP.
+            enable-admission-plugins: NodeRestriction,DenyServiceExternalIPs

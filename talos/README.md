@@ -1,93 +1,96 @@
 # Talos
 
-## Set Up
+Cluster configuration is managed with [talhelper](https://github.com/budimanjojo/talhelper). The source of truth is [`little-hp/talconfig.yaml`](little-hp/talconfig.yaml). Generated machine configs are not committed (gitignored by talhelper).
 
-- Replace the `install-image` with the appropriate Talos image that has secure boot and the necessary extensions.
-- Add the tailscale auth key to the [tailscale patch](patches/tailscale.patch.yaml)
+## Requirements
+
+- [talosctl](https://github.com/siderolabs/talos)
+- [talhelper](https://github.com/budimanjojo/talhelper)
+- [sops](https://github.com/getsops/sops)
+- [age](https://github.com/FiloSottile/age)
+
+## Initial Setup (already done)
+
+Generate a secrets bundle and encrypt it with SOPS:
+
+```bash
+cd little-hp/
+talhelper gensecret > talsecret.sops.yaml
+sops -e -i talsecret.sops.yaml
+```
 
 ## Generate and Apply Config
 
-Generate config a config file that can be applied to a Talos cluster.
+Generate machine configs from `talconfig.yaml`:
 
-```
-export CLUSTER_NAME=skuxnet
-export CONTROL_PLANE_IP=<controlplane-ip>
-
-talosctl gen config $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 \
-  --install-image=factory.talos.dev/metal-installer-secureboot/4a0d65c669d46663f377e7161e50cfd570c401f26fd9e7bda34a0216b6f1922b:v1.11.1  \
-  --install-disk=/dev/sda \
-  --with-secrets secrets.yaml
+```bash
+cd little-hp/
+talhelper genconfig
 ```
 
-Apply the generated config to the Talos cluster.
+Apply config to the node (use `--insecure` on first boot before Talos is fully configured):
 
-```
-talosctl apply-config --insecure --nodes $CONTROL_PLANE_IP --file controlplane.yaml
-```
-
-## Apply Patches
-
-Apply the required patches to the Talos server. (`system-disk-encryption` should happen before `raw-volume`, `tailscale` should happen before `network-ingress`)
-
-> Note `--mode=staged` means that the config will only be applied after reboot. This is required for disk encryption (and probably partitioning) patches.
-
-```
-talosctl patch mc --nodes $HOMELAB_IP --patch @patches/4-tailscale.yaml
+```bash
+cd little-hp/
+talhelper gencommand apply --extra-flags --insecure | bash
 ```
 
-> **Note:** After applying the tailscale patch use `talosctl edit machineconfig -n $HOMELAB_IP` to change the controlplane ip to match the tailnet ip address.
+For subsequent applies (node already running):
+
+```bash
+cd little-hp/
+talhelper gencommand apply | bash
+```
+
+## Bootstrap
+
+After applying config, bootstrap the cluster:
+
+```bash
+cd little-hp/
+talhelper gencommand bootstrap | bash
+```
+
+Then fetch the kubeconfig:
+
+```bash
+cd little-hp/
+talhelper gencommand kubeconfig | bash
+```
 
 ## Upgrading Talos
 
-Get the correct image url from the [Talos image factory](https://factory.talos.dev). Make sure you add the correct extensions (see below),
-
-```
-Your image schematic ID is: 708747e350d604ae9e57227d8dcf274091453ddb1097b765d4ea8884f1992c1f
-
- customization:
-    systemExtensions:
-        officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/tailscale
-            - siderolabs/util-linux-tools
-```
-
-Check current version
+Update `talosVersion` in `talconfig.yaml`, regenerate configs, then:
 
 ```bash
-talosctl version -n $HOMELAB_IP
+cd little-hp/
+talhelper genconfig
+talhelper gencommand upgrade --extra-flags "--preserve" | bash
 ```
 
-Then run the following with the upgrade image path set to the correct version.
+## Kubelet Serving Certificate CSRs
+
+The kubelet is configured with `serverTLSBootstrap: true`, which means it requests a serving certificate from the Kubernetes CA rather than using a self-signed cert. These CSRs are not auto-approved and require manual approval.
+
+If `kubectl logs`, `kubectl port-forward` or `kubectl exec` stop working, check for pending CSRs:
 
 ```bash
-talosctl upgrade -n $HOMELAB_IP --image factory.talos.dev/metal-installer-secureboot/708747e350d604ae9e57227d8dcf274091453ddb1097b765d4ea8884f1992c1f:v1.11.2 --preserve
+kubectl get csr
 ```
 
-> `--preserve` ensures that custom mounts and ephemeral data is kept.
-
-Upgrade to the latest version of `talosctl` to match the version of the cluster. This can be done with the following command.
+Approve any pending `kubernetes.io/kubelet-serving` CSRs:
 
 ```bash
-curl -sL https://talos.dev/install | sh
+kubectl certificate approve <csr-name>
 ```
+
+Note: kubelet serving certs rotate automatically before expiry, so this will need to be repeated periodically.
 
 ## Upgrading Kubernetes
 
-```bash
-talosctl upgrade-k8s --to 1.34.1 -n $HOMELAB_IP
-```
-
-Upgrading kubectl
+Update `kubernetesVersion` in `talconfig.yaml`, then:
 
 ```bash
-# Download binary
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-
-# Validate checksum
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-
-# Install binary
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+cd little-hp/
+talhelper gencommand upgrade-k8s | bash
 ```
