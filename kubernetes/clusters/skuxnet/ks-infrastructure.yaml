@@ -15,6 +15,7 @@ spec:
   dependsOn:
     - name: crds
     - name: longhorn
+    - name: tailscale-rbac
   decryption:
     provider: sops
     secretRef:

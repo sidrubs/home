@@ -1,0 +1,17 @@
+# Flux Kustomization for tailscale namespace and RBAC.
+# Must run before the infrastructure layer so the tailscale ServiceAccount
+# exists when Flux dry-run validates the tailscale Pods.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tailscale-rbac
+  namespace: flux-system
+spec:
+  interval: 10m
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./kubernetes/infrastructure/tailscale-rbac
+  dependsOn:
+    - name: crds

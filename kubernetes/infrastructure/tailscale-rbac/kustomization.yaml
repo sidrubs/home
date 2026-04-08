@@ -1,0 +1,7 @@
+# Tailscale namespace and RBAC — applied before the tailscale workloads
+# so Flux dry-run validation can resolve the serviceAccountName reference.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - tailscale-rbac.yaml
