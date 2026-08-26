@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: adguard
-          image: adguard/adguardhome:v0.107.71
+          image: adguard/adguardhome:v0.107.79
           # Note: The dockerhub page has a description of all the ports that
           # can be used for different applications, e.g. DNS over TLS, etc. I
           # am just using the common config for now.
